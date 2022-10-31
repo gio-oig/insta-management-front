@@ -7,21 +7,26 @@ import Button from "@mui/material/Button";
 import FormInput from "src/components/atoms/formInput";
 import Routes from "src/constants/routes";
 import { SigninSchema } from "src/utils/validations";
+import { signin } from "src/lib/api";
+import LOCALSTORAGE from "src/constants/localstorageConst";
 
 const initialFormilValues = {
   email: "",
   password: "",
 };
 
-type SignUpPropertyTypes = {
+export type SigninPropertyTypes = {
   email: string;
   password: string;
 };
 
 const SignInForm = () => {
   const navigate = useNavigate();
-  const handleSubmit = (values: SignUpPropertyTypes) => {
-    alert(JSON.stringify(values, null, 2));
+  const handleSubmit = async (values: SigninPropertyTypes) => {
+    try {
+      const { data } = await signin(values);
+      localStorage.setItem(LOCALSTORAGE.TOKEN, data.token);
+    } catch (error) {}
   };
   return (
     <Formik
@@ -29,7 +34,7 @@ const SignInForm = () => {
       validationSchema={SigninSchema}
       onSubmit={handleSubmit}
     >
-      {(props: FormikProps<SignUpPropertyTypes>) => (
+      {(props: FormikProps<SigninPropertyTypes>) => (
         <Form>
           <Grid maxWidth="500px" container rowGap={4}>
             <Grid xs={12}>

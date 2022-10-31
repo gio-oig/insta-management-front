@@ -8,6 +8,7 @@ import FormInput from "src/components/atoms/formInput";
 
 import Routes from "src/constants/routes";
 import { SignupSchema } from "src/utils/validations";
+import { signup } from "src/lib/api";
 
 const initialFormilValues = {
   name: "",
@@ -15,7 +16,7 @@ const initialFormilValues = {
   password: "",
 };
 
-type SignUpPropertyTypes = {
+export type SignUpPropertyTypes = {
   name: string;
   email: string;
   password: string;
@@ -23,13 +24,20 @@ type SignUpPropertyTypes = {
 
 const SignUpForm = () => {
   const navigate = useNavigate();
+
+  async function handleSubmit(data: SignUpPropertyTypes) {
+    try {
+      await signup(data);
+      navigate(`/${Routes.signin}`);
+    } catch (error) {
+      console.log("error");
+    }
+  }
   return (
     <Formik
       initialValues={initialFormilValues}
       validationSchema={SignupSchema}
-      onSubmit={(values) => {
-        alert(JSON.stringify(values, null, 2));
-      }}
+      onSubmit={handleSubmit}
     >
       {(props: FormikProps<SignUpPropertyTypes>) => (
         <Form>
