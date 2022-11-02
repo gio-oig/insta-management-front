@@ -9,6 +9,7 @@ import Routes from "src/constants/routes";
 import { SigninSchema } from "src/utils/validations";
 import { signin } from "src/lib/api";
 import LOCALSTORAGE from "src/constants/localstorageConst";
+import routes from "src/constants/routes";
 
 const initialFormilValues = {
   email: "",
@@ -26,6 +27,7 @@ const SignInForm = () => {
     try {
       const { data } = await signin(values);
       localStorage.setItem(LOCALSTORAGE.TOKEN, data.token);
+      navigate(`${routes.home}`);
     } catch (error) {}
   };
   return (

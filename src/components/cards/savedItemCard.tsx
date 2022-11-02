@@ -1,10 +1,18 @@
-import { Menu, MenuItem } from "@mui/material";
+import { Menu, MenuItem, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Unstable_Grid2";
 import { MouseEvent, useState } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Box } from "@mui/system";
+import { SavedSearch } from "src/pages/savedSearchs";
 
-const Tag = () => {
+type SavedItemCardProps = {
+  item: SavedSearch;
+  onUpdate?: () => void;
+  onDelete?: () => void;
+};
+
+const SavedItemCard = ({ item, onUpdate, onDelete }: SavedItemCardProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -15,17 +23,27 @@ const Tag = () => {
     setAnchorEl(null);
   };
   return (
-    <Grid container>
-      <Grid xs={12} sm="auto">
-        <img
-          src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=164&h=164&fit=crop&auto=format"
-          alt=""
-          loading="lazy"
-        />
+    <Grid
+      container
+      boxShadow=" rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;"
+      p="5px 10px"
+      borderRadius="5px"
+      alignItems="center"
+      gap="10px"
+      width="100%"
+      maxWidth="500px"
+    >
+      <Grid sm="auto">
+        <Box component="img" maxWidth="48px" src={item.image} />
       </Grid>
-      <Grid container>
-        <Grid>content</Grid>
+      <Grid container xs>
         <Grid>
+          <Typography>Name: {item.name}</Typography>
+          {item.type === "tag" && (
+            <Typography>Media Count: {item.mediaCount}</Typography>
+          )}
+        </Grid>
+        <Grid marginLeft="auto">
           <IconButton
             aria-label="more"
             id="long-button"
@@ -44,9 +62,10 @@ const Tag = () => {
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
+            onClick={handleClose}
           >
-            <MenuItem>update</MenuItem>
-            <MenuItem>delete</MenuItem>
+            <MenuItem onClick={onUpdate}>update</MenuItem>
+            <MenuItem onClick={onDelete}>delete</MenuItem>
           </Menu>
         </Grid>
       </Grid>
@@ -54,4 +73,4 @@ const Tag = () => {
   );
 };
 
-export default Tag;
+export default SavedItemCard;

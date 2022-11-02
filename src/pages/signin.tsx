@@ -3,7 +3,7 @@ import SignInForm from "src/components/forms/signinForm";
 
 const Signin = () => {
   return (
-    <AuthLayout title="signup">
+    <AuthLayout title="signin">
       <SignInForm />
     </AuthLayout>
   );
